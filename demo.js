@@ -2,17 +2,6 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-// In your Node.js server using Express.js
-
-app.get('/test', (req, res) => {
-  // You can define API routes and logic here
-  res.json({ message: 'Hello from the Node.js server!' });
-});
-
-app.listen(port, () => {
-  console.log(`Node.js server is running on http://localhost:${port}`);
-});
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://jimwelscruz0406:Residentevil0406_@cluster0.dpqawec.mongodb.net/?retryWrites=true&w=majority";
 
@@ -38,3 +27,14 @@ async function run() {
   }
 }
 run().catch(console.dir);
+
+// In your Node.js server using Express.js
+
+app.get('/test', (req, res) => {
+  // You can define API routes and logic here
+  res.json({ message: 'Hello from the Node.js server!' });
+});
+
+app.listen(port, () => {
+  console.log(`Node.js server is running on http://localhost:${port}`);
+});
