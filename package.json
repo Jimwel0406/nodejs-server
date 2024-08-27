@@ -9,9 +9,9 @@
     "start": "node api/get-access-token.js"
   },
   "dependencies": {
-    "dotenv": "^16.0.0" // Ensure you include any dependencies your code uses
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "vercel": "^28.0.0" // Optional: for local development and deployment
+    "vercel": "^28.0.0"
   }
 }
