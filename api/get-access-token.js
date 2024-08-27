@@ -1,46 +1,31 @@
 // api/get-access-token.js
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    try {
+      const { code, code_verifier } = req.body;
 
-const fetch = require('node-fetch');
-require('dotenv').config();
+      const response = await fetch(`https://quickstart-08bb39ab.myshopify.com/67842605294/auth/oauth/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic <credentials>'
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: 'shp_b0517be2-8fb6-433a-af4d-316f2a9a2093',
+          redirect_uri: 'https://quickstart-08bb39ab.myshopify.com/callback',
+          code,
+          code_verifier
+        })
+      });
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { code, code_verifier } = req.body;
-  const clientId = 'shp_b0517be2-8fb6-433a-af4d-316f2a9a2093';
-  const redirectUri = 'https://quickstart-08bb39ab.myshopify.com/callback';
-  const shop = 'quickstart-08bb39ab.myshopify.com'; // e.g., "quickstart-08bb39ab.myshopify.com"
-
-  const body = new URLSearchParams();
-  body.append('grant_type', 'authorization_code');
-  body.append('client_id', clientId);
-  body.append('redirect_uri', redirectUri);
-  body.append('code', code);
-  body.append('code_verifier', code_verifier);
-
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    // Confidential Client: add client secret if needed
-    // 'Authorization': 'Basic <base64_encoded_credentials>'
-  };
-
-  try {
-    const response = await fetch(`https://${shop}/67842605294/auth/oauth/token`, {
-      method: 'POST',
-      headers: headers,
-      body: body.toString()
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    const data = await response.json();
-    res.status(200).json(data);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-};
+}
