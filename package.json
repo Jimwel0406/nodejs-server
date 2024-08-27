@@ -1,7 +1,7 @@
 {
-  "name": "nidejs-server",
+  "name": "nodejs-server",
   "version": "1.0.0",
-  "main": "demo.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
